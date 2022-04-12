@@ -32,9 +32,9 @@ final class TempSshConfigFileTest extends TestCase
         $property = $reflection->getProperty('fileName');
         $property->setAccessible(true);
         $oldValue = $property->getValue();
-        $property->setValue('/root/.phpsu/ssh_config');
+        $property->setValue('/.phpsu/ssh_config');
         static::expectException(\Exception::class);
-        static::expectExceptionMessage(sprintf('Directory "%s" was not created', '/root/.phpsu'));
+        static::expectExceptionMessage(sprintf('Directory "%s" was not created', '/.phpsu'));
         try {
             new TempSshConfigFile();
         } finally {

@@ -90,7 +90,7 @@ final class SshConfigGenerator
             foreach ($defaultSshConfig as $key => $value) {
                 $host->{$key} = $value;
             }
-            $sshConfig->{'*'} = $host;
+            $sshConfig->__set('*', $host);
         }
         return $sshConfig;
     }

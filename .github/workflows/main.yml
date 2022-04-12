@@ -1,12 +1,36 @@
-on: [push]
+on: [push, pull_request]
 name: Test
 jobs:
   roave_bc_check:
     name: Roave BC Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - name: fetch tags
-        run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+      - uses: actions/checkout@v2
       - name: Roave BC Check
         uses: docker://nyholm/roave-bc-check-ga
+
+  lint-php:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '7.4', '8.0', '8.1' ]
+        symfonyVersion: [ '^4.4', '^5.0']
+    name: php:${{ matrix.php }} symfonyVersion:${{ matrix.symfonyVersion }}
+    container:
+      image: pluswerk/php-dev:nginx-${{ matrix.php }}
+      options: -t
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: ~/.composer/cache/files
+          key: ${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}
+      - run: composer require symfony/process:${{ matrix.symfonyVersion }} symfony/console:${{ matrix.symfonyVersion }}
+      - run: ./vendor/bin/grumphp run --ansi
+      - run: composer test
+      - run: composer infection
+      - run: composer phpstan
+      - uses: codecov/codecov-action@v1
+        with:
+          file: ./tests/test-results/coverage.xml

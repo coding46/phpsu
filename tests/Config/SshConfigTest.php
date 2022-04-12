@@ -11,7 +11,6 @@ use SplTempFileObject;
 
 final class SshConfigTest extends TestCase
 {
-
     public function testWriteConfig(): void
     {
         $sshConfig = new SshConfig();

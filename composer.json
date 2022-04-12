@@ -12,7 +12,13 @@
   "homepage": "https://phpsu.de/",
   "config": {
     "optimize-autoloader": true,
-    "process-timeout": 0
+    "process-timeout": 0,
+    "allow-plugins": {
+      "phpro/grumphp": true,
+      "ocramius/package-versions": true,
+      "pluswerk/grumphp-config": true,
+      "infection/extension-installer": true
+    }
   },
   "authors": [
     {
@@ -31,10 +37,10 @@
     "phpsu"
   ],
   "scripts": {
-    "test": "vendor/bin/phpunit -c tests/phpunit.xml --testdox --color=always",
+    "test": "XDEBUG_MODE=coverage vendor/bin/phpunit -c tests/phpunit.xml --testdox --color=always",
     "test:watch": "vendor/bin/phpunit-watcher watch -c tests/phpunit.xml --testdox",
-    "infection": "vendor/bin/infection --threads=4 --only-covered --min-msi=89 --min-covered-msi=89 --ansi",
-    "phpstan": "vendor/bin/phpstan analyse -c phpstan.neon --level max src --ansi"
+    "infection": "XDEBUG_MODE=coverage vendor/bin/infection --threads=4 --only-covered --min-msi=89 --min-covered-msi=89 --ansi",
+    "phpstan": "vendor/bin/phpstan --ansi"
   },
   "autoload": {
     "psr-4": {
@@ -50,7 +56,7 @@
   "require": {
     "symfony/console": "^4.0 | ^5.0",
     "symfony/process": "^4.0 | ^5.0",
-    "php": "^7.2 || ~8.0.0",
+    "php": "~7.4.0 || ~8.0.0 || ~8.1.0",
     "ext-json": "*",
     "phpsu/shellcommandbuilder": "^2.0"
   },
@@ -60,8 +66,8 @@
     "spatie/phpunit-watcher": "^1.22",
     "phpstan/phpstan": "^0.12.18",
     "infection/infection": "^0.15.3",
-    "phpunit/php-invoker": "^2.0 | ^3.0",
-    "phpunit/phpunit": "^8.5 || ^9.0"
+    "phpunit/php-invoker": "^3.0",
+    "phpunit/phpunit": "^9.5"
   },
   "suggest": {
     "bamarni/composer-bin-plugin": "Dependency-Independent use of phpsu"

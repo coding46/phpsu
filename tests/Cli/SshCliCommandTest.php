@@ -20,7 +20,6 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class SshCliCommandTest extends TestCase
 {
-
     public function testSshCliCommandDryRun(): void
     {
         $mockConfigurationLoader = $this->createMockConfigurationLoader($this->createConfig());
